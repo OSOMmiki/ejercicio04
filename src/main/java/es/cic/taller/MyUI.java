@@ -23,45 +23,57 @@ import com.vaadin.ui.VerticalLayout;
  */
 @Theme("mytheme")
 public class MyUI extends UI {
-	 final TextField name = new TextField();
+	 final TextField nombre = new TextField();
+	 final TextField apellidos = new TextField();
+	 final TextField edad = new TextField();
+	 final TextField domicilio = new TextField();
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
         
        
-        name.setCaption("Escribe lo que quieras aqui:");
-        name.addValueChangeListener(event -> updateCaption(event.getValue().length()));
-        name .setMaxLength(25);
-        name.addValueChangeListener(event -> Notification.show("Texto cambiado:",
-                String.valueOf(event.getValue()),
-                Type.TRAY_NOTIFICATION));
+        nombre.setCaption("Nombre:");
+        nombre.setPlaceholder("Introduzca su nombre");
+        nombre.setMaxLength(30);
+        nombre.addValueChangeListener(event -> updateCaption(event.getValue().length(),nombre));
+        
+        apellidos.setCaption("Apellidos:");
+        apellidos.setPlaceholder("Introduzca sus apellidos");
+        apellidos.setMaxLength(30);
+        apellidos.addValueChangeListener(event -> updateCaption(event.getValue().length(),apellidos));
+        
+        edad.setCaption("Edad:");
+        edad.setPlaceholder("Introduzca su edad");
+        edad.setMaxLength(3);
+        edad.addValueChangeListener(event -> updateCaption(event.getValue().length(),edad));
+        
+        domicilio.setCaption("Domicilio:");
+        domicilio.setPlaceholder("Introduzca su direccion");
+        domicilio.setMaxLength(50);
+        domicilio.addValueChangeListener(event -> updateCaption(event.getValue().length(),domicilio));
+        
+        
         
         Button button = new Button("Clique");
         button.addClickListener( e -> {
-            layout.addComponent(new Label(name.getValue() ));
+            layout.addComponent(new Label(nombre.getValue() + apellidos.getValue() +" de "+ edad.getValue() +" años vive en " + domicilio.getValue()));
         });
         
-        Button miBoton = new Button("Pulse");
-        miBoton.addClickListener( event -> layout.addComponent(new Label("Este botón no hace nada, es troll")));
+       
         
-        Button otroBoton = new Button("¿?");
-        otroBoton.addFocusListener(event -> layout.addComponent(new Label("Pero")));
-        otroBoton.addClickListener( event -> layout.addComponent(new Label("Pero que es ezto?!")));
-         
-        
-        layout.addComponents(name, button, miBoton,otroBoton);
+        layout.addComponents(nombre,apellidos,edad,domicilio, button);
         
         setContent(layout);
     }
 
-    private void updateCaption(final int textLength) {
+    private void updateCaption(final int textLength, final TextField texto) {
         final StringBuilder builder = new StringBuilder();
         builder.append(String.valueOf(textLength));
-        if (name.getMaxLength() >= 0) {
-            builder.append("/").append(name.getMaxLength());
+        if (texto.getMaxLength() >= 0) {
+            builder.append("/").append(texto.getMaxLength());
         }
         builder.append(" caracteres");
-        name.setCaption(builder.toString());
+        texto.setCaption(builder.toString());
     }
 	
 
