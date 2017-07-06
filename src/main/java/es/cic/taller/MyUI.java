@@ -7,6 +7,7 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
@@ -24,17 +25,17 @@ import com.vaadin.ui.VerticalLayout;
  */
 @Theme("mytheme")
 public class MyUI extends UI {
+	  GridLayout sample;
 	 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        final VerticalLayout layout = new VerticalLayout();
-        final VerticalLayout layoutNombres = new VerticalLayout();
-        final HorizontalLayout layoutFinal = new HorizontalLayout();
+    	final VerticalLayout layout = new VerticalLayout();
         final TextField nombre = new TextField();
         final TextField apellidos = new TextField();
    	 	final TextField edad = new TextField();
    	 	final TextField domicilio = new TextField();
    	 	
+   	 	TextField[] cuadrosTexto= {nombre,apellidos,edad,domicilio};
    	 	pintaTextField(nombre,"Introduzca nombre",30);
         
         pintaTextField(apellidos,"Introduzca apedillo",30);
@@ -53,12 +54,17 @@ public class MyUI extends UI {
         });
         
        
-        layoutNombres.addComponents(new Label("Nombre:"),new Label("Apellidos:"),new Label("Edad:"),new Label("Domicilio:"));
-        setContent(layoutNombres);
-        layout.addComponents(nombre,apellidos,edad,domicilio, button);
+        Label[] etiquetas= {new Label("Nombre:"),new Label("Apellidos:"),new Label("Edad:"),new Label("Domicilio:")};
+        
+        sample = new GridLayout();
+        sample.addStyleName("outlined");
+        sample.setSizeFull();
+ 
+        generateMatrixGrid(4, 2,etiquetas,cuadrosTexto);
+        layout.addComponents(sample,button);
         setContent(layout);
-        layoutFinal.addComponents(layoutNombres,layout);
-        setContent(layoutFinal);
+ 
+
         
     }
     private void pintaTextField(TextField texto,String placeholder,int maxLength) {
@@ -72,5 +78,24 @@ public class MyUI extends UI {
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
     }
-
+    private void generateMatrixGrid(final int rows, final int columns,Label[] etiquetas,TextField[] cuadrosTexto) {
+        sample.removeAllComponents();
+        sample.setRows(rows);
+        sample.setColumns(columns);
+ 
+        for (int row = 0; row < sample.getRows(); row++) {
+            for (int col = 0; col < sample.getColumns(); col++) {
+                if (col==0) {
+                	Label etiqueta = etiquetas[row];
+                	sample.addComponent(etiqueta);
+                }else {
+                	TextField cuadroTexto = cuadrosTexto[row];
+                	sample.addComponent(cuadroTexto);
+                }
+                sample.setRowExpandRatio(row, 0.0f);
+                sample.setColumnExpandRatio(col, 0.0f);
+            }
+        }
+    }
+   
 }
