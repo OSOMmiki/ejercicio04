@@ -36,16 +36,13 @@ public class MyUI extends UI {
    	 	final TextField domicilio = new TextField();
    	 	
    	 	pintaTextField(nombre,"Introduzca nombre",30);
-        nombre.addValueChangeListener(event -> updateCaption(event.getValue().length(),nombre));
         
         pintaTextField(apellidos,"Introduzca apedillo",30);
-        apellidos.addValueChangeListener(event -> updateCaption(event.getValue().length(),apellidos));
         
         pintaTextField(edad,"Introduzca edad",3);
-        edad.addValueChangeListener(event -> updateCaption(event.getValue().length(),edad));
         
         pintaTextField(domicilio,"Introduzca domicilio",50);
-        domicilio.addValueChangeListener(event -> updateCaption(event.getValue().length(),domicilio));
+ 
         
         
         
@@ -69,15 +66,6 @@ public class MyUI extends UI {
           texto.setMaxLength(maxLength);
     }
 
-    private void updateCaption(final int textLength, final TextField texto) {
-        final StringBuilder builder = new StringBuilder();
-        builder.append(String.valueOf(textLength));
-        if (texto.getMaxLength() >= 0) {
-            builder.append("/").append(texto.getMaxLength());
-        }
-        builder.append(" caracteres");
-        texto.setCaption(builder.toString());
-    }
 	
 
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
