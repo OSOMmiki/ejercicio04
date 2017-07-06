@@ -7,6 +7,7 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
@@ -23,47 +24,49 @@ import com.vaadin.ui.VerticalLayout;
  */
 @Theme("mytheme")
 public class MyUI extends UI {
-	 final TextField nombre = new TextField();
-	 final TextField apellidos = new TextField();
-	 final TextField edad = new TextField();
-	 final TextField domicilio = new TextField();
+	 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
-        
-       
-        nombre.setCaption("Nombre:");
-        nombre.setPlaceholder("Introduzca su nombre");
-        nombre.setMaxLength(30);
+        final VerticalLayout layoutNombres = new VerticalLayout();
+        final HorizontalLayout layoutFinal = new HorizontalLayout();
+        final TextField nombre = new TextField();
+        final TextField apellidos = new TextField();
+   	 	final TextField edad = new TextField();
+   	 	final TextField domicilio = new TextField();
+   	 	
+   	 	pintaTextField(nombre,"Introduzca nombre",30);
         nombre.addValueChangeListener(event -> updateCaption(event.getValue().length(),nombre));
         
-        apellidos.setCaption("Apellidos:");
-        apellidos.setPlaceholder("Introduzca sus apellidos");
-        apellidos.setMaxLength(30);
+        pintaTextField(apellidos,"Introduzca apedillo",30);
         apellidos.addValueChangeListener(event -> updateCaption(event.getValue().length(),apellidos));
         
-        edad.setCaption("Edad:");
-        edad.setPlaceholder("Introduzca su edad");
-        edad.setMaxLength(3);
+        pintaTextField(edad,"Introduzca edad",3);
         edad.addValueChangeListener(event -> updateCaption(event.getValue().length(),edad));
         
-        domicilio.setCaption("Domicilio:");
-        domicilio.setPlaceholder("Introduzca su direccion");
-        domicilio.setMaxLength(50);
+        pintaTextField(domicilio,"Introduzca domicilio",50);
         domicilio.addValueChangeListener(event -> updateCaption(event.getValue().length(),domicilio));
         
         
         
         Button button = new Button("Clique");
         button.addClickListener( e -> {
-            layout.addComponent(new Label(nombre.getValue() + apellidos.getValue() +" de "+ edad.getValue() +" años vive en " + domicilio.getValue()));
+        	 Notification.show(nombre.getValue() +" "+ apellidos.getValue() +" de "+ edad.getValue() +" años vive en " + domicilio.getValue(),
+                     Type.TRAY_NOTIFICATION);
         });
         
        
-        
+        layoutNombres.addComponents(new Label("Nombre:"),new Label("Apellidos:"),new Label("Edad:"),new Label("Domicilio:"));
+        setContent(layoutNombres);
         layout.addComponents(nombre,apellidos,edad,domicilio, button);
-        
         setContent(layout);
+        layoutFinal.addComponents(layoutNombres,layout);
+        setContent(layoutFinal);
+        
+    }
+    private void pintaTextField(TextField texto,String placeholder,int maxLength) {
+          texto.setPlaceholder(placeholder);
+          texto.setMaxLength(maxLength);
     }
 
     private void updateCaption(final int textLength, final TextField texto) {
