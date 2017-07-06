@@ -58,7 +58,7 @@ public class MyUI extends UI {
         
         sample = new GridLayout();
         sample.addStyleName("outlined");
-        sample.setSizeFull();
+        sample.setSpacing(true);
  
         generateMatrixGrid(4, 2,etiquetas,cuadrosTexto);
         layout.addComponents(sample,button);
@@ -92,8 +92,8 @@ public class MyUI extends UI {
                 	TextField cuadroTexto = cuadrosTexto[row];
                 	sample.addComponent(cuadroTexto);
                 }
-                sample.setRowExpandRatio(row, 0.0f);
-                sample.setColumnExpandRatio(col, 0.0f);
+                sample.setRowExpandRatio(row, 4.0f);
+                sample.setColumnExpandRatio(col, 4.0f);
             }
         }
     }
